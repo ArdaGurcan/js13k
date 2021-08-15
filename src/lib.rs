@@ -1,10 +1,9 @@
 mod utils;
 
 use wasm_bindgen::prelude::*;
+extern crate wee_alloc;
 
-// When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
-// allocator.
-#[cfg(feature = "wee_alloc")]
+// Use `wee_alloc` as the global allocator.
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
@@ -14,6 +13,7 @@ extern {
 }
 
 #[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, wasm-js13k!");
+pub fn greet(name: &str) -> String {
+    alert(&["Hello, ", name, "!"].join(""));
+    return ["Hi, ", name, "! I just wanted to say that you're valid <3"].join("")
 }
