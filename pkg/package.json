@@ -1,0 +1,18 @@
+{
+  "name": "js13k-template",
+  "collaborators": [
+    "ArdaGurcan <ardagurcan2004@gmail.com>"
+  ],
+  "version": "0.1.2",
+  "files": [
+    "wasm_js13k_bg.wasm",
+    "wasm_js13k.js",
+    "wasm_js13k.d.ts",
+    "index.js",
+    "index.html",
+    "README.md"
+  ],
+  "module": "wasm_js13k.js",
+  "types": "wasm_js13k.d.ts",
+  "sideEffects": false
+}
