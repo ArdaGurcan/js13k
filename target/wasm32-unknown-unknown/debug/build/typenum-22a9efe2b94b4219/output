@@ -1,2 +1,0 @@
-cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/arda/Coding/Rust/wasm-js13k/target/wasm32-unknown-unknown/debug/build/typenum-22a9efe2b94b4219/out/consts.rs
-cargo:rustc-env=TYPENUM_BUILD_OP=/Users/arda/Coding/Rust/wasm-js13k/target/wasm32-unknown-unknown/debug/build/typenum-22a9efe2b94b4219/out/op.rs
