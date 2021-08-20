@@ -6,7 +6,12 @@ use super::super:common_funcs as cf;
 
 pub struct Color2D {
     program: WebGlProgram,
+    rect_vertice_ary_length: usize,
     rect_vertice_buffer: WebGlBuffer,
+    u_color: WebGlUniformLocation,
+    u_opacity: WebGlUniformLocation,
+    u_tranform: WebGlUniformLocation,
+
 }
 
 impl Color2D {
@@ -40,8 +45,25 @@ impl Color2D {
         gl.buffer_data_with_array_buffer_view(GL::ARRAY_BUFFER, &vert_array, GL:STATIC_DRAW);
 
         Self {
-            program: program,
+            u_color: gl.get)uniform_location(&program, "uColor").unwrap(),
+            u_opacity: gl.get)uniform_location(&program, "uOpacity").unwrap(),
+            u_transform: gl.get)uniform_location(&program, "uTransform").unwrap(),
+            rect_vertice_ary_length: vertices_rect.len(),
             rect_vertice_buffer: buffer_rect,
+            program: program,
         }
+    }
+
+    pub fn render(
+        &self,
+        gl: &WebGlRenderingContext,
+        bottom: f32,
+        top:  f32,
+        left: f32,
+        right: f32,
+        canvas_height: f32,
+        canvas_width: f32,
+    ) {
+        gl.use_program(Some(&self.program))
     }
 }

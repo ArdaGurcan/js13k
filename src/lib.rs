@@ -14,17 +14,19 @@ extern "C" {
 }
 
 #[wasm_bindgen]
-pub struct Client {
+pub struct ClaraClient {
     gl: WebGlRenderingContext,
+    program_color_2d: programs::Color2D,
 }
 
 #[wasm_bindgen]
-impl Client {
+impl ClaraClient {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
         console_error_panic_hook::set_once();
         let gl = gl_setup::initialize_webgl_context().unwrap();
         Self {
+            program_color_2d: programs::Color2D:new(&gl),
             gl: gl,
         }
     }
@@ -34,7 +36,18 @@ impl Client {
     }
 
     pub fn render(&self) {
-        self.gl.clear(GL::COLOR_BUFFER_BIT | GL::DEPTH_BUFFER_BIT)
+        self.gl.clear(GL::COLOR_BUFFER_BIT | GL::DEPTH_BUFFER_BIT);
+
+        self.program_color_2d.render(
+            &self.gl,
+            0.,
+            10.,
+            0.,
+            10.,
+            10.,
+            10.,
+
+        );
     }
 }
 

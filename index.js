@@ -12,7 +12,7 @@ rust.then(m => {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
     const FPS_THROTTLE = 1000.0 / 30.0;
-    const client = new m.Client();
+    const client = new m.ClaraClient();
     const initialTime = Date.now();
     var lastDrawTime = -1;
 
