@@ -1,0 +1,1 @@
+/Users/arda/Coding/Rust/wasm-js13k/target/wasm32-unknown-unknown/debug/wasm_js13k.wasm: /Users/arda/.cargo/registry/src/github.com-1ecc6299db9ec823/wasm-bindgen-0.2.76/build.rs /Users/arda/Coding/Rust/wasm-js13k/src/gl_setup.rs /Users/arda/Coding/Rust/wasm-js13k/src/lib.rs

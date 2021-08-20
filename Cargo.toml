@@ -1,17 +1,17 @@
 [package]
-name = "rust-3d-demo"
+name = "wasm-js13k"
 version = "0.1.0"
-authors = ["Arda Gürcan"]
-edition =  "2018"
+authors = ["Clara Gürcan"]
+edition = "2018"
 
 [lib]
-crate-type =  ["cdylib"]
+crate-type = ["cdylib"]
 
 [dependencies]
 console_error_panic_hook = "=0.1.5"
 js-sys = "0.3.19"
 lazy_static = "1.3.0"
-nalgebra = "0.10.0"
+nalgebra = "0.18.0"
 wasm-bindgen = "0.2.44"
 
 [dependencies.web-sys]
