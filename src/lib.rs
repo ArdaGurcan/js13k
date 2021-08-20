@@ -3,6 +3,8 @@ use wasm_bindgen::prelude::*;
 use web_sys::*;
 use web_sys::WebGlRenderingContext as GL;
 
+mod shaders;
+mod programs;
 mod gl_setup;
 
 #[wasm_bindgen]
