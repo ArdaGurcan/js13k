@@ -7,9 +7,9 @@ use super::super::common_funcs as cf;
 
 pub struct Color2D {
     program: WebGlProgram,
+    color_buffer: WebGlBuffer,
     index_count: i32,
     rect_vertice_buffer: WebGlBuffer,
-    u_color: WebGlUniformLocation,
     u_opacity: WebGlUniformLocation,
     u_transform: WebGlUniformLocation,
 
@@ -61,11 +61,10 @@ impl Color2D {
         gl.buffer_data_with_array_buffer_view(GL::ELEMENT_ARRAY_BUFFER, &indices_array, GL::STATIC_DRAW);
 
         Self {
+            color_buffer: gl.create_buffer().ok_or("failed to create buffer").unwrap(),
             index_count: indices_array.length() as i32,
-            u_color: gl.get_uniform_location(&program, "uColor").unwrap(),
             u_opacity: gl.get_uniform_location(&program, "uOpacity").unwrap(),
             u_transform: gl.get_uniform_location(&program, "uTransform").unwrap(),
-            rect_vertice_ary_length: vertices_rect.len(),
             rect_vertice_buffer: buffer_rect,
             program: program,
         }
@@ -87,13 +86,27 @@ impl Color2D {
         gl.vertex_attrib_pointer_with_i32(0, 2, GL::FLOAT, false, 0, 0);
         gl.enable_vertex_attrib_array(0);
 
-        gl.uniform4f(
-            Some(&self.u_color),
-            0.,
-            0.5,
-            0.5,
-            1.0,
-        );
+        gl.bind_buffer(GL::ARRAY_BUFFER, Some(&self.color_buffer));
+        gl.vertex_attrib_pointer_with_i32(1, 4, GL::FLOAT, false, 0,0 );
+        gl.enable_vertex_attrib_array(1);
+
+
+        let colors: [f32;16] = [
+            1., 0., 0., 1.,
+            0., 1., 0., 1.,
+            0., 0., 1., 1.,
+            1., 1., 1., 1.,
+        ];
+
+        let colors_memory_buffer = wasm_bindgen::memory()
+        .dyn_into::<WebAssembly::Memory>()
+        .unwrap()
+        .buffer();
+        let color_vals_location = colors.as_ptr() as u32 / 4;
+        let color_vals_array = js_sys::Float32Array::new(&colors_memory_buffer)
+            .subarray(color_vals_location, color_vals_location + colors.len() as u32);
+        gl.buffer_data_with_array_buffer_view(GL::ARRAY_BUFFER, &color_vals_array, GL::DYNAMIC_DRAW);
+
 
         gl.uniform1f(Some(&self.u_opacity), 1.);
 
