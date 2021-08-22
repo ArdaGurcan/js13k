@@ -63,10 +63,10 @@ impl ClaraClient {
         
         self.program_color_2d_gradient.render(
             &self.gl,
-            curr_state.control_bottom + 20.,
-            curr_state.control_top - 20.,
-            curr_state.control_left + 20.,
-            curr_state.control_right - 20.,
+            curr_state.control_bottom + 50.,
+            curr_state.control_top - 50.,
+            curr_state.control_left + 50.,
+            curr_state.control_right - 50.,
             curr_state.canvas_height,
             curr_state.canvas_width,
 

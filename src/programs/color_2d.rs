@@ -75,10 +75,7 @@ impl Color2D {
 
         gl.uniform4f(
             Some(&self.u_color),
-            0.6,
-            0.1,
-            0.5,
-            1.0,
+        0.2,0.2,0.2, 1.,
         );
 
         gl.uniform1f(Some(&self.u_opacity), 1.);
