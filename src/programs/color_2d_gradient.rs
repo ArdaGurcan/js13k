@@ -5,9 +5,9 @@ use js_sys::WebAssembly;
 use super::super::common_funcs as cf;
 
 
-pub struct Color2D {
+pub struct Color2DGradient {
     program: WebGlProgram,
-    index_count: i32,
+    rect_vertice_ary_length: usize,
     rect_vertice_buffer: WebGlBuffer,
     u_color: WebGlUniformLocation,
     u_opacity: WebGlUniformLocation,
@@ -15,23 +15,23 @@ pub struct Color2D {
 
 }
 
-impl Color2D {
+impl Color2DGradient {
     pub fn new(gl: &WebGlRenderingContext) -> Self {
         let program = cf::link_program(
             &gl,
-            super::super::shaders::vertex::color_2d::SHADER,
-            super::super::shaders::fragment::color_2d::SHADER,
+            super::super::shaders::vertex::color_2d_gradient::SHADER,
+            super::super::shaders::fragment::color_2d_gradient::SHADER,
 
         ).unwrap();
 
-        let vertices_rect: [f32; 8] = [
+        let vertices_rect: [f32; 12] = [
             0., 1.,
             0., 0.,
             1., 1.,
+            1., 1.,
+            0., 0.,
             1., 0.,
         ];
-
-        let indices_rect: [u16; 6] = [0,1,2,2,1,3];
 
         let memory_buffer = wasm_bindgen::memory()
             .dyn_into::<WebAssembly::Memory>()
@@ -47,21 +47,7 @@ impl Color2D {
         gl.bind_buffer(GL::ARRAY_BUFFER, Some(&buffer_rect));
         gl.buffer_data_with_array_buffer_view(GL::ARRAY_BUFFER, &vert_array, GL::STATIC_DRAW);
 
-        let indices_memory_buffer = wasm_bindgen::memory()
-            .dyn_into::<WebAssembly::Memory>()
-            .unwrap()
-            .buffer();
-        let indices_location = indices_rect.as_ptr() as u32 / 2;
-        let indices_array = js_sys::Uint16Array::new(&indices_memory_buffer).subarray(
-            indices_location,
-            indices_location + indices_rect.len() as u32 
-        );
-        let buffer_indices = gl.create_buffer().unwrap();
-        gl.bind_buffer(GL::ELEMENT_ARRAY_BUFFER, Some(&buffer_indices));
-        gl.buffer_data_with_array_buffer_view(GL::ELEMENT_ARRAY_BUFFER, &indices_array, GL::STATIC_DRAW);
-
         Self {
-            index_count: indices_array.length() as i32,
             u_color: gl.get_uniform_location(&program, "uColor").unwrap(),
             u_opacity: gl.get_uniform_location(&program, "uOpacity").unwrap(),
             u_transform: gl.get_uniform_location(&program, "uTransform").unwrap(),
@@ -89,8 +75,8 @@ impl Color2D {
 
         gl.uniform4f(
             Some(&self.u_color),
-            0.,
-            0.5,
+            0.6,
+            0.1,
             0.5,
             1.0,
         );
@@ -112,6 +98,6 @@ impl Color2D {
         let transform_mat = cf::mult_matrix_4(scale_mat, translation_mat);
         gl.uniform_matrix4fv_with_f32_array(Some(&self.u_transform), false, &transform_mat);
 
-        gl.draw_elements_with_i32(GL::TRIANGLES, self.index_count,GL::UNSIGNED_SHORT, 0);
+        gl.draw_arrays(GL::TRIANGLES, 0, (self.rect_vertice_ary_length / 2) as i32);
     }
 }
